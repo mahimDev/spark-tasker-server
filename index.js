@@ -26,19 +26,19 @@ async function run() {
   try {
     const taskCollections = client.db("spark-tasker").collection("my-tasks");
 
-    app.post("/add-tasks", async (req, res) => {
+    app.post("/tasks", async (req, res) => {
       const receive = req.body;
       // console.log(receive);
       const result = await taskCollections.insertOne(receive);
       res.send(result);
     });
-    app.get("/my-todos", async (req, res) => {
+    app.get("/tasks", async (req, res) => {
       const email = req.query.email;
       // console.log(email);
       const result = await taskCollections.find({ taskUser: email }).toArray();
       res.send(result);
     });
-    app.get("/update-task/:id", async (req, res) => {
+    app.get("/tasks/:id", async (req, res) => {
       const updateId = req.params.id;
       // console.log("update id", updateId);
       const result = await taskCollections.findOne({
@@ -47,7 +47,7 @@ async function run() {
       res.send(result);
     });
 
-    app.delete("/delete-task/:id", async (req, res) => {
+    app.delete("/tasks/:id", async (req, res) => {
       const deleteId = req.params.id;
       const result = await taskCollections.deleteOne({
         _id: new ObjectId(deleteId),
@@ -55,7 +55,7 @@ async function run() {
       res.send(result);
     });
 
-    app.put("/update-task/:id", async (req, res) => {
+    app.put("/tasks/:id", async (req, res) => {
       const updateVersion = req.body;
       const id = req.params.id;
       const options = { upsert: true };
@@ -72,7 +72,7 @@ async function run() {
       // console.log(result);
     });
 
-    app.put("/update-todo/:id", async (req, res) => {
+    app.put("/tasks/:id", async (req, res) => {
       const updateId = req.params.id;
       // console.log("update Mr is", updateId);
       const updteStatus = req.body;
